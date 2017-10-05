@@ -1,0 +1,60 @@
+---
+title: "formative"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+### question 4
+D1 = read.csv(file="/Users/Yifan/Desktop/HMXPC13_DI_v2_5-14-14.csv", head=TRUE)
+attach(D1)
+library("dplyr")
+library("tidyr")
+
+### question 6
+t1 = filter(D1, course_id == "HarvardX/CS50x/2012" & certified == 1)
+nrow(t1)
+
+### question 7
+t2 = filter(D1, course_id == "HarvardX/CS50x/2012" & final_cc_cname_DI == "Colombia" & start_time_DI == "2012-10-15")
+nrow(t2)
+
+### question 8
+D2 = filter(D1, final_cc_cname_DI == "Brazil")[,c("userid_DI","start_time_DI")]
+
+### question 9
+t6 = D1[,c("start_time_DI","userid_DI","registered")]
+t7 = mutate(t6,status = 1)
+### extract only first 100 rows for saving processing power
+t8 = unique(t7[1:100,])
+t9 = subset(t8,select=-c(registered))
+D3 = spread(t9, start_time_DI,status)
+
+### question 10
+D3 = subset(D3,select = -c(userid_DI))
+D3
+
+### question 11
+M1 = data.matrix(D3)
+M1
+### question 12
+M2 = t(M1)
+M2
+### question 13
+M1[is.na(M1)]=0
+M2 = t(M1)
+M3 = M1 %*% M2
+
+### question 14
+diag(M3) = NA
+
+```
